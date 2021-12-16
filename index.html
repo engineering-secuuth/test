@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Secuuth</title>
+  <!-- <script src="./dist/Secuuth.bundle.js"></script> -->
+  <!-- <script src="C:/secUUth/GitRepos/secuuth-js-sdk/dist/Secuuth.bundle.js"> </script> -->
+  <!-- <script src="https://cdn.jsdelivr.net/gh/deepSecure/sdk-bundle/Secuuth.bundle.js"></script>   -->
+  <script src="https://cdn.jsdelivr.net/gh/akum304/test/neBundl.js"></script>  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9/core.js"></script>  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9/sha256.js"></script>  
+  <script>
+    function getPayload(token) {
+      var base64Url = token.split(".")[1];
+      var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+      var jsonPayload = decodeURIComponent(
+        atob(base64)
+          .split("")
+          .map(function (c) {
+            return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+          })
+          .join("")
+      );
+
+      return JSON.parse(jsonPayload);
+    }
+    const secuuth = new Secuuth({
+      keyId: "802d4066-bddd-43f4-8bff-3b6f775ca25b",
+      profileName: "Default",
+      containerId: "secuuthForm",
+      onSubmit: (tokens) => {
+        console.log("Tokens: " + tokens)
+        // const { accessToken, idToken, refreshToken } = tokens;
+        // const { userId } = getPayload(idToken);
+
+        // window.localStorage.setItem("accessToken", accessToken);
+        // window.localStorage.setItem("idToken", idToken);
+        // window.localStorage.setItem("refreshToken", refreshToken);
+        // window.localStorage.setItem("userId", userId);
+
+        //window.location.href = "http://localhost:5000/project";
+
+        fetch('https://app.secuuth.io/project', {
+         method: 'POST', // or 'PUT'
+         headers: {
+                   'Content-Type': 'application/json',
+                 },
+        body: JSON.stringify(tokens).toString()});
+
+      },
+    });
+  </script>
+  <style>
+    * {
+      margin: 0px;
+      padding: 0px;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      width: 100%;
+      background: url("https://uploads-ssl.webflow.com/61234975b500ae0500a02f42/61237662eb07786a67b89a4e_Background%20Image%201%201.png");
+    }
+  </style>
+</head>
+
+<body>
+  <div id="secuuthForm"></div>
+</body>
+
+</html>
